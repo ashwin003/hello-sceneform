@@ -1,44 +1,55 @@
 package com.thyagash.hellosceneform
 
+import android.content.Context
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
+import android.widget.ListView
 import android.widget.Toast
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
-import kotlinx.android.synthetic.main.activity_main.*
+import com.afollestad.materialdialogs.LayoutMode
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.customview.customView
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     // List of models to render
     lateinit var modelsToRender: List<Model>
-
+    lateinit var listView: ListView
+    lateinit var context: Context
+    private lateinit var adapter: ModelAdapter
     // Currently selected model
-    lateinit var selected: Model
+    var selected: Model? = null
 
-    lateinit var arFragment: ArFragment
+    private lateinit var arFragment: ArFragment
 
-    override fun onClick(v: View?) {
-        selected = modelsToRender.first{ it.view == v }
-        setSelectedBackground()
-    }
+    private lateinit var materialDialog: MaterialDialog
+
+    private lateinit var pullUpButton: ImageButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        context = this
         setContentView(R.layout.activity_main)
+
+        modelsToRender = prepareModelsToRender()
+        selected = null
+
 
         modelsToRender = prepareModelsToRender()
         selected = modelsToRender[0]
 
-        setupClickListeners()
-
         setupRenderables()
 
         arFragment = supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment
-        
+
         arFragment.setOnTapArPlaneListener { hitResult, plane, motionEvent ->
             val anchor = hitResult.createAnchor()
             val anchorNode = AnchorNode(anchor)
@@ -46,21 +57,45 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             renderModel(anchorNode, selected)
         }
-    }
 
-    private fun setSelectedBackground() {
-        for(i in modelsToRender.indices) {
-            val color = if (modelsToRender[i] == selected)
-                Color.parseColor("#80333639") else Color.TRANSPARENT
-            modelsToRender[i].view.setBackgroundColor(color)
+
+        materialDialog = MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
+        materialDialog.customView(R.layout.bottom_sheet)
+
+        pullUpButton = findViewById<ImageButton>(R.id.btn_bottom_sheet)
+
+        pullUpButton.setOnClickListener{
+            materialDialog.show {
+                listView = findViewById(R.id.modelList)
+                adapter = ModelAdapter(context, ArrayList(modelsToRender))
+                listView.adapter = adapter
+
+                listView.setOnItemClickListener { parent, view, position, id ->
+                    selected = modelsToRender.get(position)
+                    selected!!.view = view
+                    setSelectedBackground()
+                }
+            }
         }
     }
 
-    private fun renderModel(anchorNode: AnchorNode, selected: Model) {
-        val modelToRender = TransformableNode(arFragment.transformationSystem)
-        modelToRender.setParent(anchorNode)
-        modelToRender.renderable = selected.renderable
-        modelToRender.select()
+    private fun prepareModelsToRender(): List<Model> {
+        return listOf(
+            Model("Andy",R.raw.andy, R.drawable.andy),
+            Model("Bear",R.raw.bear, R.drawable.bear),
+            Model("Cat", R.raw.cat, R.drawable.cat),
+            Model("Cow", R.raw.cow, R.drawable.cow),
+            Model("Dog", R.raw.dog, R.drawable.dog),
+            Model("Dragon", R.raw.dragon, R.drawable.dragon),
+            Model("Elephant", R.raw.elephant, R.drawable.elephant),
+            Model("Ferret", R.raw.ferret, R.drawable.ferret),
+            Model("Hippopotamus", R.raw.hippopotamus, R.drawable.hippopotamus),
+            Model("Horse", R.raw.horse, R.drawable.horse),
+            Model("Koala Bear", R.raw.koala_bear, R.drawable.koala_bear),
+            Model("Lion", R.raw.lion, R.drawable.lion),
+            Model("Reindeer", R.raw.reindeer, R.drawable.reindeer),
+            Model("Wolverine", R.raw.wolverine, R.drawable.wolverine)
+        )
     }
 
     private fun setupRenderables() {
@@ -76,27 +111,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun setupClickListeners() {
-        for(i in modelsToRender.indices) {
-            modelsToRender[i].view.setOnClickListener(this)
-        }
+    private fun renderModel(anchorNode: AnchorNode, selected: Model?) {
+        val modelToRender = TransformableNode(arFragment.transformationSystem)
+        modelToRender.setParent(anchorNode)
+        modelToRender.renderable = selected?.renderable
+        modelToRender.select()
     }
 
-    private fun prepareModelsToRender(): List<Model> {
-        return listOf(
-            Model("Andy",andy, R.raw.andy),
-            Model("Bear",bear, R.raw.bear),
-            Model("Cat", cat, R.raw.cat),
-            Model("Cow", cow, R.raw.cow),
-            Model("Dog", dog, R.raw.dog),
-            Model("Elephant", elephant, R.raw.elephant),
-            Model("Ferret", ferret, R.raw.ferret),
-            Model("Hippopotamus", hippopotamus, R.raw.hippopotamus),
-            Model("Horse", horse, R.raw.horse),
-            Model("Koala Bear", koala_bear, R.raw.koala_bear),
-            Model("Lion", lion, R.raw.lion),
-            Model("Reindeer", reindeer, R.raw.reindeer),
-            Model("Wolverine", wolverine, R.raw.wolverine)
-        )
+    private fun setSelectedBackground() {
+        for(i in modelsToRender.indices) {
+            val color = if (modelsToRender[i] == selected)
+                Color.parseColor("#80333639") else Color.TRANSPARENT
+            if(modelsToRender[i].view != null)
+                modelsToRender[i].view!!.setBackgroundColor(color)
+        }
     }
 }

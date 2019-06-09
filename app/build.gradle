@@ -27,6 +27,14 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    // implementation 'androidx.appcompat.app.AppCompatActivity:'
+    implementation 'com.afollestad.material-dialogs:core:3.0.0-rc3'
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.0.0-rc3'
+
+
     // Provides ArFragment, and other Sceneform UX resources:
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.9.0"
 
@@ -105,3 +113,8 @@ sceneform.asset('data/models/andy.obj',
         'default',
         'data/models/andy.sfa',
         'src/main/res/raw/andy')
+
+sceneform.asset('data/models/dragon.fbx',
+        'default',
+        'data/models/dragon.sfa',
+        'src/main/res/raw/dragon')
