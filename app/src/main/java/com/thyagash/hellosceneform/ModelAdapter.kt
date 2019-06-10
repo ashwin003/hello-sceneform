@@ -1,6 +1,7 @@
 package com.thyagash.hellosceneform
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,5 +30,17 @@ class ModelAdapter(context: Context, val data: ArrayList<Model>) : ArrayAdapter<
         return rowView
     }
 
-    fun getSelectedModel(): Model = selectedModel
+    fun setSelectedModel(model: Model) {
+        selectedModel = model
+        setSelectedBackground()
+    }
+
+    private fun setSelectedBackground() {
+        for(i in data.indices) {
+            val color = if (getItem(i) == selectedModel)
+                Color.parseColor("#80333639") else Color.TRANSPARENT
+            if(data[i].view != null)
+                data[i].view!!.setBackgroundColor(color)
+        }
+    }
 }

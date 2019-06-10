@@ -1,11 +1,10 @@
 package com.thyagash.hellosceneform
 
 import android.content.Context
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.Toast
 import com.google.ar.sceneform.AnchorNode
@@ -16,32 +15,23 @@ import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.customview.customView
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
-    // List of models to render
-    lateinit var modelsToRender: List<Model>
-    lateinit var listView: ListView
-    lateinit var context: Context
+    private lateinit var modelsToRender: List<Model>
+    private lateinit var listView: ListView
     private lateinit var adapter: ModelAdapter
-    // Currently selected model
-    var selected: Model? = null
+    private lateinit var selected: Model
 
     private lateinit var arFragment: ArFragment
 
-    private lateinit var materialDialog: MaterialDialog
-
-    private lateinit var pullUpButton: ImageButton
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        context = this
+        val context: Context = this
         setContentView(R.layout.activity_main)
 
         modelsToRender = prepareModelsToRender()
-        selected = null
-
 
         modelsToRender = prepareModelsToRender()
         selected = modelsToRender[0]
@@ -55,25 +45,29 @@ class MainActivity : AppCompatActivity() {
             val anchorNode = AnchorNode(anchor)
             anchorNode.setParent(arFragment.arSceneView.scene)
 
-            renderModel(anchorNode, selected)
+            renderSelectedModel(anchorNode)
         }
 
+        val selectedIconImage = findViewById<ImageView>(R.id.selected_model_image)
 
-        materialDialog = MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
+        val materialDialog = MaterialDialog(this, BottomSheet(LayoutMode.WRAP_CONTENT))
         materialDialog.customView(R.layout.bottom_sheet)
 
-        pullUpButton = findViewById<ImageButton>(R.id.btn_bottom_sheet)
+        val pullUpButton = findViewById<ImageButton>(R.id.btn_bottom_sheet)
 
         pullUpButton.setOnClickListener{
             materialDialog.show {
                 listView = findViewById(R.id.modelList)
                 adapter = ModelAdapter(context, ArrayList(modelsToRender))
                 listView.adapter = adapter
+                if(selected != null) {
+                    adapter.setSelectedModel(selected)
+                }
 
-                listView.setOnItemClickListener { parent, view, position, id ->
+                listView.setOnItemClickListener { _, view, position, _ ->
                     selected = modelsToRender.get(position)
-                    selected!!.view = view
-                    setSelectedBackground()
+                    selected.view = view
+                    selectedIconImage.setImageResource(selected.icon)
                 }
             }
         }
@@ -104,26 +98,22 @@ class MainActivity : AppCompatActivity() {
                 .setSource(this, modelsToRender[i].model)
                 .build()
                 .thenAccept { renderable -> modelsToRender[i].renderable = renderable }
-                .exceptionally { throwable ->
+                .exceptionally { _ ->
                     Toast.makeText(this@MainActivity, modelsToRender[i].toString() , Toast.LENGTH_SHORT).show()
                     null
                 }
         }
     }
 
-    private fun renderModel(anchorNode: AnchorNode, selected: Model?) {
-        val modelToRender = TransformableNode(arFragment.transformationSystem)
-        modelToRender.setParent(anchorNode)
-        modelToRender.renderable = selected?.renderable
-        modelToRender.select()
-    }
-
-    private fun setSelectedBackground() {
-        for(i in modelsToRender.indices) {
-            val color = if (modelsToRender[i] == selected)
-                Color.parseColor("#80333639") else Color.TRANSPARENT
-            if(modelsToRender[i].view != null)
-                modelsToRender[i].view!!.setBackgroundColor(color)
-        }
+    private fun renderSelectedModel(anchorNode: AnchorNode) {
+       try {
+           val modelToRender = TransformableNode(arFragment.transformationSystem)
+           modelToRender.setParent(anchorNode)
+           modelToRender.renderable = selected.renderable
+           modelToRender.select()
+       }
+       catch (_:Exception) {
+           Toast.makeText(this@MainActivity, selected.toString() , Toast.LENGTH_SHORT).show()
+       }
     }
 }
