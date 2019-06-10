@@ -80,7 +80,6 @@ class MainActivity : AppCompatActivity() {
             Model("Cat", R.raw.cat, R.drawable.cat),
             Model("Cow", R.raw.cow, R.drawable.cow),
             Model("Dog", R.raw.dog, R.drawable.dog),
-            Model("Dragon", R.raw.dragon, R.drawable.dragon),
             Model("Elephant", R.raw.elephant, R.drawable.elephant),
             Model("Ferret", R.raw.ferret, R.drawable.ferret),
             Model("Hippopotamus", R.raw.hippopotamus, R.drawable.hippopotamus),
