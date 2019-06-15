@@ -3,10 +3,7 @@ package com.thyagash.hellosceneform
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.Toast
+import android.widget.*
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
@@ -20,7 +17,7 @@ import java.lang.Exception
 class MainActivity : AppCompatActivity() {
 
     private lateinit var modelsToRender: List<Model>
-    private lateinit var listView: ListView
+    private lateinit var listView: GridView
     private lateinit var adapter: ModelAdapter
     private lateinit var selected: Model
 
@@ -65,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 listView.setOnItemClickListener { _, view, position, _ ->
-                    selected = modelsToRender.get(position)
+                    selected = modelsToRender[position]
                     selected.view = view
                     selectedIconImage.setImageResource(selected.icon)
                 }
@@ -75,6 +72,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun prepareModelsToRender(): List<Model> {
         return listOf(
+            Model("Acnologia",R.raw.acnologia, R.drawable.acnologia),
             Model("Andy",R.raw.andy, R.drawable.andy),
             Model("Bear",R.raw.bear, R.drawable.bear),
             Model("Cat", R.raw.cat, R.drawable.cat),
@@ -97,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                 .setSource(this, modelsToRender[i].model)
                 .build()
                 .thenAccept { renderable -> modelsToRender[i].renderable = renderable }
-                .exceptionally { _ ->
+                .exceptionally { e ->
                     Toast.makeText(this@MainActivity, modelsToRender[i].toString() , Toast.LENGTH_SHORT).show()
                     null
                 }

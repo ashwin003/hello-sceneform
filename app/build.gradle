@@ -114,7 +114,12 @@ sceneform.asset('data/models/andy.obj',
         'data/models/andy.sfa',
         'src/main/res/raw/andy')
 
-sceneform.asset('data/models/dragon.fbx',
+sceneform.asset('data/models/acnologia/acnologia.fbx',
         'default',
-        'data/models/dragon.sfa',
-        'src/main/res/raw/dragon')
+        'data/models/acnologia/acnologia.sfa',
+        'src/main/res/raw/acnologia')
+
+sceneform.asset('data/models/mario/mario.gltf',
+        'default',
+        'data/models/mario/mario.sfa',
+        'src/main/res/raw/mario')
