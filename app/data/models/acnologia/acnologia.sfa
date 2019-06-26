@@ -171,7 +171,7 @@
     file: 'data/models/acnologia/acnologia.fbx',
     name: 'acnologia',
     recenter: 'root',
-    scale: 0.40006700000000001,
+    scale: 0.30006700000000001,
   },
   samplers: [
     {

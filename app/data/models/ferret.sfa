@@ -56,7 +56,7 @@
     file: 'data/models/ferret.fbx',
     name: 'ferret',
     recenter: 'root',
-    scale: 3.6997100000000001,
+    scale: 24.6997100000000001,
   },
   samplers: [
     {

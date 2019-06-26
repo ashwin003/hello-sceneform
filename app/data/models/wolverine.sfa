@@ -56,7 +56,7 @@
     file: 'data/models/wolverine.fbx',
     name: 'wolverine',
     recenter: 'root',
-    scale: 4.5659270000000003,
+    scale: 32.5659270000000003,
   },
   samplers: [
     {

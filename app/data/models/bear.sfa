@@ -56,7 +56,7 @@
     file: 'data/models/bear.fbx',
     name: 'bear',
     recenter: 'root',
-    scale: 6.4932540000000003,
+    scale: 48.4932540000000003,
   },
   samplers: [
     {

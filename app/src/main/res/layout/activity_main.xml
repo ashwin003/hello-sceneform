@@ -17,15 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_bottom_sheet"
             android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@id/sceneform_fragment"
             android:layout_centerHorizontal="true"
-            android:baselineAlignBottom="true"
-            android:background="@drawable/md_transparent"
-            android:padding="10dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_pull_up"/>
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_pull_up"
+    ></com.google.android.material.floatingactionbutton.FloatingActionButton>
 </RelativeLayout>

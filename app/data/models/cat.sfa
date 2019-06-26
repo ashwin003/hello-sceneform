@@ -56,7 +56,7 @@
     file: 'data/models/cat.fbx',
     name: 'cat',
     recenter: 'root',
-    scale: 7.6481950000000003,
+    scale: 42.6481950000000003,
   },
   samplers: [
     {

@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.GridView
+
+
 
 class ModelAdapter(context: Context, val data: ArrayList<Model>) : ArrayAdapter<Model>(context, R.layout.icon_template, data) {
     private lateinit var selectedModel: Model

@@ -12,7 +12,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -28,8 +28,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
     // implementation 'androidx.appcompat.app.AppCompatActivity:'
     implementation 'com.afollestad.material-dialogs:core:3.0.0-rc3'
     implementation 'com.afollestad.material-dialogs:bottomsheets:3.0.0-rc3'
@@ -44,7 +44,8 @@ dependencies {
     // Alternatively, use ArSceneView without the UX dependency.
     //implementation "com.google.ar.sceneform:core:1.9.0"
 
-    implementation "com.android.support:appcompat-v7:28.0.0"
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 }
 
 apply plugin: 'com.google.ar.sceneform.plugin'
@@ -123,3 +124,43 @@ sceneform.asset('data/models/mario/mario.gltf',
         'default',
         'data/models/mario/mario.sfa',
         'src/main/res/raw/mario')
+
+sceneform.asset('data/models/phoenix/source/phoenix.fbx',
+        'default',
+        'data/models/phoenix/source/phoenix.sfa',
+        'src/main/res/raw/phoenix')
+
+sceneform.asset('data/models/freddy_fazbear/source/freddy_fazbear.fbx',
+        'default',
+        'data/models/freddy_fazbear/source/freddy_fazbear.sfa',
+        'src/main/res/raw/freddy_fazbear')
+
+sceneform.asset('data/models/golden_freddy/golden_freddy.gltf',
+        'default',
+        'data/models/golden_freddy/golden_freddy.sfa',
+        'src/main/res/raw/golden_freddy')
+
+sceneform.asset('data/models/earth/earth.obj',
+        'default',
+        'data/models/earth/earth.sfa',
+        'src/main/res/raw/earth')
+
+sceneform.asset('data/models/Flareon/flareon.FBX',
+        'default',
+        'data/models/Flareon/flareon.sfa',
+        'src/main/res/raw/flareon')
+
+sceneform.asset('data/models/Glass Cube/glass_cube.fbx',
+        'default',
+        'data/models/Glass Cube/glass_cube.sfa',
+        'src/main/res/raw/glass_cube')
+
+sceneform.asset('data/models/Squirtle/squirtle.FBX',
+        'default',
+        'data/models/Squirtle/squirtle.sfa',
+        'src/main/res/raw/squirtle')
+
+sceneform.asset('data/models/zubat/source/zubat.fbx',
+        'default',
+        'data/models/zubat/source/zubat.sfa',
+        'src/main/res/raw/zubat')

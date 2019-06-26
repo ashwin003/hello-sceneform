@@ -3,6 +3,7 @@ package com.thyagash.hellosceneform
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.rendering.ModelRenderable
@@ -21,6 +22,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: ModelAdapter
     private lateinit var selected: Model
 
+    private lateinit var categories: List<Category>
+    private lateinit var selectedCategory: Category
+    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var spinner: Spinner
+
     private lateinit var arFragment: ArFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +38,9 @@ class MainActivity : AppCompatActivity() {
 
         modelsToRender = prepareModelsToRender()
         selected = modelsToRender[0]
+
+        categories = prepareCategories()
+        selectedCategory = categories[0]
 
         setupRenderables()
 
@@ -54,15 +63,36 @@ class MainActivity : AppCompatActivity() {
 
         pullUpButton.setOnClickListener{
             materialDialog.show {
+
+                spinner = findViewById(R.id.spinner)
+                categoryAdapter = CategoryAdapter(context, ArrayList(categories))
+                spinner.adapter = categoryAdapter
+
+                spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                    }
+
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        selectedCategory = categories[position]
+
+                        val modelsList = getFilteredModels()
+                        adapter = ModelAdapter(context, ArrayList(modelsList))
+                        listView.adapter = adapter
+                    }
+                }
+
                 listView = findViewById(R.id.modelList)
-                adapter = ModelAdapter(context, ArrayList(modelsToRender))
+
+                val modelsList = getFilteredModels()
+                adapter = ModelAdapter(context, ArrayList(modelsList))
                 listView.adapter = adapter
                 if(selected != null) {
                     adapter.setSelectedModel(selected)
                 }
 
                 listView.setOnItemClickListener { _, view, position, _ ->
-                    selected = modelsToRender[position]
+                    selected = adapter.getItem(position)!!
                     selected.view = view
                     selectedIconImage.setImageResource(selected.icon)
                 }
@@ -72,20 +102,43 @@ class MainActivity : AppCompatActivity() {
 
     private fun prepareModelsToRender(): List<Model> {
         return listOf(
-            Model("Acnologia",R.raw.acnologia, R.drawable.acnologia),
-            Model("Andy",R.raw.andy, R.drawable.andy),
-            Model("Bear",R.raw.bear, R.drawable.bear),
-            Model("Cat", R.raw.cat, R.drawable.cat),
-            Model("Cow", R.raw.cow, R.drawable.cow),
-            Model("Dog", R.raw.dog, R.drawable.dog),
-            Model("Elephant", R.raw.elephant, R.drawable.elephant),
-            Model("Ferret", R.raw.ferret, R.drawable.ferret),
-            Model("Hippopotamus", R.raw.hippopotamus, R.drawable.hippopotamus),
-            Model("Horse", R.raw.horse, R.drawable.horse),
-            Model("Koala Bear", R.raw.koala_bear, R.drawable.koala_bear),
-            Model("Lion", R.raw.lion, R.drawable.lion),
-            Model("Reindeer", R.raw.reindeer, R.drawable.reindeer),
-            Model("Wolverine", R.raw.wolverine, R.drawable.wolverine)
+            Model("Acnologia",R.raw.acnologia, R.drawable.acnologia, 4),
+            Model("Andy",R.raw.andy, R.drawable.andy, 4),
+            Model("Bear",R.raw.bear, R.drawable.bear, 2),
+            Model("Cat", R.raw.cat, R.drawable.cat, 1),
+            Model("Cow", R.raw.cow, R.drawable.cow, 1),
+            Model("Dog", R.raw.dog, R.drawable.dog, 1),
+            Model("Elephant", R.raw.elephant, R.drawable.elephant, 1),
+            Model("Ferret", R.raw.ferret, R.drawable.ferret, 1),
+            Model("Flareon", R.raw.flareon, R.drawable.flareon, 2),
+            Model("Freddy Fazbear", R.raw.freddy_fazbear, R.drawable.freddy_fazbear, 3),
+            Model("Golden Freddy", R.raw.golden_freddy, R.drawable.golden_freddy, 3),
+            Model("Hippopotamus", R.raw.hippopotamus, R.drawable.hippopotamus, 1),
+            Model("Horse", R.raw.horse, R.drawable.horse, 1),
+            Model("Koala Bear", R.raw.koala_bear, R.drawable.koala_bear, 1),
+            Model("Lion", R.raw.lion, R.drawable.lion, 1),
+            Model("Reindeer", R.raw.reindeer, R.drawable.reindeer, 1),
+            Model("Squirtle", R.raw.squirtle, R.drawable.squirtle, 2),
+            Model("Wolverine", R.raw.wolverine, R.drawable.wolverine, 1),
+            Model("Zubat", R.raw.zubat, R.drawable.zubat, 2)
+        )
+    }
+
+    private fun getFilteredModels(): List<Model> {
+        return if(selectedCategory.id == 0) {
+            modelsToRender
+        } else {
+            modelsToRender.filter { it.category == selectedCategory.id }
+        }
+    }
+
+    private fun prepareCategories(): List<Category> {
+        return listOf(
+            Category(0, "All"),
+            Category(1, "Animals"),
+            Category(2, "Pokemon"),
+            Category(3, "Fazbear"),
+            Category(4, "Misc")
         )
     }
 

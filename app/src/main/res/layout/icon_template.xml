@@ -3,11 +3,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="2dp">
     <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/icon"
             android:maxWidth="100dp"
-            android:maxHeight="85dp"
+            android:maxHeight="35dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -17,6 +20,8 @@
             android:textColor="@color/colorPrimaryDark"
             android:maxHeight="85dp"
             android:layout_width="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:padding="10dp"
             android:textSize="15sp"

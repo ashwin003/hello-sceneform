@@ -56,7 +56,7 @@
     file: 'data/models/koala_bear.fbx',
     name: 'koala_bear',
     recenter: 'root',
-    scale: 9.765625,
+    scale: 45.765625,
   },
   samplers: [
     {
